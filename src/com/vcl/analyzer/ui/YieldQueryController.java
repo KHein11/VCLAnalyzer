@@ -5,31 +5,30 @@
 package com.vcl.analyzer.ui;
 
 import com.vcl.analyzer.CommandFileAnalyzer;
+import com.vcl.analyzer.ExprAnalyzer;
 import com.vcl.analyzer.SetAnalyzer;
 import com.vcl.analyzer.VisitCondition;
-import com.vcl.analyzer.model.CmdFileRecord;
+import com.vcl.analyzer.model.ExprRecord;
 import com.vcl.analyzer.model.SetRecord;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 
 /**
  *
  * @author kyihein
  */
-public class AssignQueryController implements Initializable {
+public class YieldQueryController implements Initializable {
 
+    @FXML
+    private TextField exprValue;
     @FXML
     private TextField lineNoValue;
     @FXML
@@ -41,9 +40,9 @@ public class AssignQueryController implements Initializable {
     @FXML
     private Label lineNoErrorMsg;
     @FXML
-    private Label assignedValueLabel;
+    private Label yieldValueLabel;
     @FXML
-    private TextField assignedValue;
+    private TextField yieldValue;
     @FXML
     private ComboBox<String> cmdFileBox;
     private List<String> cmdFiles;
@@ -79,11 +78,12 @@ public class AssignQueryController implements Initializable {
     @FXML
     private void executeQueryAction(ActionEvent event) {
         hideErrorMsg();
-        
+
         VisitCondition visit = null;
         int lineNo = 0;
         String cmdFileName = "";
-        
+        String expr = "";
+
         try {
             if (!visitBox.getValue().equals(AnalyzerConfig.ITEM_ALL)) {
                 visit = new VisitCondition(visitBox.getValue(), visitValue.getText());
@@ -99,20 +99,16 @@ public class AssignQueryController implements Initializable {
             lineNoErrorMsg.setVisible(true);
             return;
         }
-        
+        expr = exprValue.getText();
         cmdFileName = cmdFileBox.getValue();
-        
+
         try {
-            SetRecord sr = SetAnalyzer.findBy(cmdFileName, lineNo, visit);
+            ExprRecord er = ExprAnalyzer.findBy(expr, cmdFileName, lineNo, visit);
             setResultVisible(true);
-            if (sr != null) {
-                if(sr.isMultiValue()) {
-                    assignedValue.setText(sr.getValueListString());
-                } else {
-                    assignedValue.setText(sr.getVarValue());
-                }
+            if (er != null) {
+                yieldValue.setText(er.getValue());
             } else {
-                assignedValue.setVisible(false);
+                yieldValue.setVisible(false);
             }
         } catch (SQLException e) {
             System.err.println("Error occured accessing database : " + e.getMessage());
@@ -122,13 +118,16 @@ public class AssignQueryController implements Initializable {
     @FXML
     private void resetAction(ActionEvent event) {
         hideErrorMsg();
+
+        exprValue.setText("");
+
         lineNoValue.setText("");
-        
+
         visitBox.setValue(AnalyzerConfig.ITEM_ALL);
         visitValue.setDisable(true);
-        
-        if(cmdFiles.size() > 0) {
-           cmdFileBox.setValue(cmdFiles.get(0));
+
+        if (cmdFiles.size() > 0) {
+            cmdFileBox.setValue(cmdFiles.get(0));
         }
         setResultVisible(false);
     }
@@ -137,14 +136,14 @@ public class AssignQueryController implements Initializable {
         if (visitErrorMsg.isVisible()) {
             visitErrorMsg.setVisible(false);
         }
-        
+
         if (lineNoErrorMsg.isVisible()) {
             lineNoErrorMsg.setVisible(false);
         }
     }
 
     private void setResultVisible(boolean visible) {
-        assignedValueLabel.setVisible(visible);
-        assignedValue.setVisible(visible);
+        yieldValueLabel.setVisible(visible);
+        yieldValue.setVisible(visible);
     }
 }

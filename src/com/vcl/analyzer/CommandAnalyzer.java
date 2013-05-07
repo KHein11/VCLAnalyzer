@@ -45,21 +45,14 @@ public class CommandAnalyzer extends Analyzer {
                 Statement stmt = conn.createStatement();
                 ResultSet rs = stmt.executeQuery(sb.toString())) {
             while (rs.next()) {
-                CmdRecord cmd = new CmdRecord();
-                cmd.setCmdId(rs.getLong("cmd_id"));
-                cmd.setCmdType(rs.getString("cmd_name"));
-                cmd.setCmdValue(rs.getString("cmd_value"));
-                cmd.setCmdFileName(rs.getString("file_name"));
-                cmd.setVisit(rs.getInt("visit"));
-                cmd.setCmdType(rs.getString("cmd_name"));
-                cmd.setLineNo(rs.getInt("line_no"));
+                CmdRecord cmd = getCmdRecord(rs);
                 cmdList.add(cmd);
             }
 
         }
         return cmdList;
     }
-
+    
     public static List<String> getAllCmdTypes() throws SQLException {
         List<String> cmdTypes = new ArrayList<>();
         String sql = "Select distinct cmd_name from cmd_type order by cmd_name";
@@ -75,5 +68,16 @@ public class CommandAnalyzer extends Analyzer {
         }
 
         return cmdTypes;
+    }
+
+    private static CmdRecord getCmdRecord(ResultSet rs) throws SQLException {
+        CmdRecord cmd = new CmdRecord();
+        cmd.setCmdId(rs.getLong("cmd_id"));
+        cmd.setCmdType(rs.getString("cmd_name"));
+        cmd.setCmdValue(rs.getString("cmd_value"));
+        cmd.setCmdFileName(rs.getString("file_name"));
+        cmd.setVisit(rs.getInt("visit"));
+        cmd.setLineNo(rs.getInt("line_no"));
+        return cmd;
     }
 }

@@ -10,7 +10,7 @@
 
 <BorderPane id="BorderPane" fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" xmlns:fx="http://javafx.com/fxml" fx:controller="com.vcl.analyzer.ui.AnalyzerController">
   <center>
-    <AnchorPane prefHeight="200.0" prefWidth="200.0">
+    <AnchorPane prefHeight="676.0" prefWidth="875.9999000000025">
       <children>
         <HBox id="HBox" alignment="CENTER" layoutY="222.0" prefWidth="206.0" spacing="5.0" AnchorPane.leftAnchor="178.0" AnchorPane.rightAnchor="245.0">
           <children>
@@ -25,12 +25,16 @@
     </AnchorPane>
   </center>
   <left>
-    <VBox prefHeight="676.0" prefWidth="110.0">
+    <VBox prefHeight="676.0" prefWidth="117.0">
       <Hyperlink fx:id="cmdMenu" onAction="#cmdMenuAction" text="Command" />
-      <Hyperlink onAction="#adaptMenuAction" text="Adapt" />
+      <Hyperlink id="cmdMenu" onAction="#cmdFileMenuAction" text="Command File" />
       <padding>
-        <Insets bottom="20.0" left="10.0" top="10.0" />
+        <Insets left="10.0" right="10.0" top="20.0" />
       </padding>
+      <Hyperlink onAction="#adaptMenuAction" text="Adapt" />
+      <Hyperlink onAction="#assignMenuAction" text="Assign" />
+      <Hyperlink onAction="#yieldMenuAction" text="Yield" />
+      <Hyperlink onAction="#affectMenuAction" text="Affect" />
     </VBox>
   </left>
   <top>

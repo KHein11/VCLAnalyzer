@@ -8,13 +8,10 @@ import com.vcl.analyzer.AdaptAnalyzer;
 import com.vcl.analyzer.CommandFileAnalyzer;
 import com.vcl.analyzer.VisitCondition;
 import com.vcl.analyzer.model.AdaptRecord;
-import com.vcl.analyzer.model.CmdRecord;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -74,7 +71,7 @@ public class AdaptQueryController implements Initializable {
             setCmdFieldsVisible(false);
             
             cmdFiles = CommandFileAnalyzer.getAllFileNames();
-            cmdFileBox.getItems().addAll(cmdFiles);
+            cmdFileBox.getItems().setAll(cmdFiles);
             if(cmdFiles.size() > 0) {
                 cmdFileBox.setValue(cmdFiles.get(0));
             }
@@ -119,8 +116,8 @@ public class AdaptQueryController implements Initializable {
     private void onVisitComboBoxAction(ActionEvent event) {
         if (visitBox.getValue().equals(AnalyzerConfig.ITEM_ALL)) {
             visitValue.setDisable(true);
-        } else {
             visitValue.setText("");
+        } else {
             visitValue.setDisable(false);
         }
     }

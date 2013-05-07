@@ -5,16 +5,16 @@
 package com.vcl.analyzer.ui;
 
 import com.vcl.analyzer.CommandFileAnalyzer;
+import com.vcl.analyzer.ExprAnalyzer;
 import com.vcl.analyzer.SetAnalyzer;
 import com.vcl.analyzer.VisitCondition;
-import com.vcl.analyzer.model.CmdFileRecord;
+import com.vcl.analyzer.model.AdaptRecord;
+import com.vcl.analyzer.model.ExprRecord;
 import com.vcl.analyzer.model.SetRecord;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -28,8 +28,10 @@ import javafx.scene.control.TextField;
  *
  * @author kyihein
  */
-public class AssignQueryController implements Initializable {
+public class AffectQueryController implements Initializable {
 
+    @FXML
+    private TextField exprValue;
     @FXML
     private TextField lineNoValue;
     @FXML
@@ -41,17 +43,15 @@ public class AssignQueryController implements Initializable {
     @FXML
     private Label lineNoErrorMsg;
     @FXML
-    private Label assignedValueLabel;
-    @FXML
-    private TextField assignedValue;
-    @FXML
     private ComboBox<String> cmdFileBox;
     private List<String> cmdFiles;
 
+    @FXML
+    private TableView<SetRecord> setRecordTable;
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
-            setResultVisible(false);
             cmdFiles = CommandFileAnalyzer.getAllFileNames();
             cmdFileBox.getItems().setAll(cmdFiles);
             if (cmdFiles.size() > 0) {
@@ -79,11 +79,12 @@ public class AssignQueryController implements Initializable {
     @FXML
     private void executeQueryAction(ActionEvent event) {
         hideErrorMsg();
-        
+
         VisitCondition visit = null;
         int lineNo = 0;
         String cmdFileName = "";
-        
+        String expr = "";
+
         try {
             if (!visitBox.getValue().equals(AnalyzerConfig.ITEM_ALL)) {
                 visit = new VisitCondition(visitBox.getValue(), visitValue.getText());
@@ -99,21 +100,19 @@ public class AssignQueryController implements Initializable {
             lineNoErrorMsg.setVisible(true);
             return;
         }
-        
+        expr = exprValue.getText();
         cmdFileName = cmdFileBox.getValue();
-        
+
         try {
-            SetRecord sr = SetAnalyzer.findBy(cmdFileName, lineNo, visit);
-            setResultVisible(true);
-            if (sr != null) {
-                if(sr.isMultiValue()) {
-                    assignedValue.setText(sr.getValueListString());
-                } else {
-                    assignedValue.setText(sr.getVarValue());
-                }
-            } else {
-                assignedValue.setVisible(false);
-            }
+            ExprRecord er = ExprAnalyzer.findBy(expr, cmdFileName, lineNo, visit);
+            System.out.println("er " + er);
+            if (er != null) {
+                System.out.println("er.getCmdId " + er.getCmdId());
+                List<SetRecord> setRecords = SetAnalyzer.findAffectExpr(er.getCmdId());
+                System.out.println("setRecords.size " + setRecords.size());
+                ObservableList<SetRecord> data = setRecordTable.getItems();
+                data.setAll(setRecords);
+            } 
         } catch (SQLException e) {
             System.err.println("Error occured accessing database : " + e.getMessage());
         }
@@ -122,29 +121,27 @@ public class AssignQueryController implements Initializable {
     @FXML
     private void resetAction(ActionEvent event) {
         hideErrorMsg();
+
+        exprValue.setText("");
+
         lineNoValue.setText("");
-        
+
         visitBox.setValue(AnalyzerConfig.ITEM_ALL);
         visitValue.setDisable(true);
-        
-        if(cmdFiles.size() > 0) {
-           cmdFileBox.setValue(cmdFiles.get(0));
+
+        if (cmdFiles.size() > 0) {
+            cmdFileBox.setValue(cmdFiles.get(0));
         }
-        setResultVisible(false);
+        
     }
 
     private void hideErrorMsg() {
         if (visitErrorMsg.isVisible()) {
             visitErrorMsg.setVisible(false);
         }
-        
+
         if (lineNoErrorMsg.isVisible()) {
             lineNoErrorMsg.setVisible(false);
         }
-    }
-
-    private void setResultVisible(boolean visible) {
-        assignedValueLabel.setVisible(visible);
-        assignedValue.setVisible(visible);
     }
 }

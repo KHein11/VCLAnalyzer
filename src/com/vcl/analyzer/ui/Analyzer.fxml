@@ -32,6 +32,10 @@
         <Insets left="10.0" right="10.0" top="20.0" />
       </padding>
       <Hyperlink onAction="#adaptMenuAction" text="Adapt" />
+      <Hyperlink onAction="#assignMenuAction" text="Assign" />
+      <Hyperlink onAction="#yieldMenuAction" text="Yield" />
+      <Hyperlink onAction="#affectMenuAction" text="Affect" />
+      <Hyperlink onAction="#matchMenuAction" text="Match" />
     </VBox>
   </left>
   <top>

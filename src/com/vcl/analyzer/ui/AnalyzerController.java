@@ -32,9 +32,10 @@ public class AnalyzerController implements Initializable {
     public static final int CMD_MENU = 0;
     public static final int CMD_FILE_MENU = 1;
     public static final int ADAPT_MENU = 2;
-    public static final int SET_MENU = 3;
+    public static final int ASSIGN_MENU = 3;
     public static final int YIELD_MENU = 4;
-    public static final int EFFECT_MENU = 5;
+    public static final int AFFECT_MENU = 5;
+    public static final int MATCH_MENU = 6;
     
     private int currentMenu = NO_MENU;
     
@@ -89,6 +90,38 @@ public class AnalyzerController implements Initializable {
         if (statDbFile != null && !statDbFile.equals("") && currentMenu != CMD_FILE_MENU) {
             loadQueryPane("CommandFileQuery.fxml");
             currentMenu = CMD_FILE_MENU;
+        }
+    }
+    
+    @FXML
+    private void assignMenuAction(ActionEvent event) throws IOException {
+        if (statDbFile != null && !statDbFile.equals("") && currentMenu != ASSIGN_MENU) {
+            loadQueryPane("AssignQuery.fxml");
+            currentMenu = ASSIGN_MENU;
+        }
+    }
+    
+    @FXML
+    private void yieldMenuAction(ActionEvent event) throws IOException {
+        if (statDbFile != null && !statDbFile.equals("") && currentMenu != YIELD_MENU) {
+            loadQueryPane("YieldQuery.fxml");
+            currentMenu = YIELD_MENU;
+        }
+    }
+    
+    @FXML
+    private void affectMenuAction(ActionEvent event) throws IOException {
+        if (statDbFile != null && !statDbFile.equals("") && currentMenu != AFFECT_MENU) {
+            loadQueryPane("AffectQuery.fxml");
+            currentMenu = AFFECT_MENU;
+        }
+    }
+    
+    @FXML
+    private void matchMenuAction(ActionEvent event) throws IOException {
+        if (statDbFile != null && !statDbFile.equals("") && currentMenu != MATCH_MENU) {
+            loadQueryPane("MatchQuery.fxml");
+            currentMenu = MATCH_MENU;
         }
     }
     

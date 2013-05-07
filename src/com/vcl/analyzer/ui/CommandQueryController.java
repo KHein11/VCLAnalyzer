@@ -10,11 +10,8 @@ import com.vcl.analyzer.VisitCondition;
 import com.vcl.analyzer.model.CmdRecord;
 import java.net.URL;
 import java.sql.SQLException;
-import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -69,9 +66,9 @@ public class CommandQueryController implements Initializable {
     @FXML
     private void onVisitComboBoxAction(ActionEvent event) {
         if (visitBox.getValue().equals(AnalyzerConfig.ITEM_ALL)) {
+            visitValue.setText("");
             visitValue.setDisable(true);
         } else {
-            visitValue.setText("");
             visitValue.setDisable(false);
         }
     }

@@ -10,15 +10,15 @@
 <?import javafx.scene.control.cell.PropertyValueFactory?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="500.0" prefWidth="800.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml" fx:controller="com.vcl.analyzer.ui.CommandFileQueryController">
+<AnchorPane id="AnchorPane" prefHeight="500.0" prefWidth="800.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml" fx:controller="com.vcl.analyzer.ui.AssignQueryController">
   <children>
     <SplitPane dividerPositions="0.25903614457831325" focusTraversable="true" orientation="VERTICAL" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <items>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
           <children>
-            <Label layoutX="14.0" layoutY="26.0" text="Find all command file that modifies variable" />
-            <Label layoutX="447.0" layoutY="26.0" prefWidth="50.0" text="in visit" />
-            <ComboBox fx:id="visitBox" layoutX="520.0" layoutY="23.0" onAction="#onVisitComboBoxAction" prefWidth="50.0">
+            <Label layoutX="14.0" layoutY="26.0" text="Find value assgined by set command in" />
+            <Label layoutX="520.0" layoutY="26.0" prefWidth="50.0" text="in visit" />
+            <ComboBox fx:id="visitBox" layoutX="593.0" layoutY="26.0" onAction="#onVisitComboBoxAction" prefWidth="50.0">
               <items>
                 <FXCollections fx:factory="observableArrayList">
                   <String fx:value="Item 1" />
@@ -27,32 +27,28 @@
                 </FXCollections>
               </items>
             </ComboBox>
-            <TextField fx:id="visitValue" layoutX="596.0" layoutY="23.0" prefWidth="70.0" />
-            <Button layoutX="520.0" layoutY="68.0" mnemonicParsing="false" onAction="#executeQueryAction" prefWidth="57.0" text="Ok" />
-            <Button layoutX="609.0" layoutY="68.0" mnemonicParsing="false" onAction="#resetAction" text="Reset" />
-            <Label fx:id="visitErrorMsg" layoutX="596.0" layoutY="45.0" prefWidth="122.0" text="Invalid visit value." textFill="RED" visible="false" />
-            <TextField id="varName" fx:id="varNameValue" layoutX="309.0" layoutY="26.0" prefWidth="119.0" />
+            <TextField fx:id="visitValue" layoutX="669.0" layoutY="26.0" prefWidth="70.0" />
+            <Button layoutX="593.0" layoutY="71.0" mnemonicParsing="false" onAction="#executeQueryAction" prefWidth="57.0" text="Ok" />
+            <Button layoutX="682.0" layoutY="71.0" mnemonicParsing="false" onAction="#resetAction" text="Reset" />
+            <Label fx:id="visitErrorMsg" layoutX="669.0" layoutY="48.0" prefWidth="122.0" text="Invalid visit value." textFill="RED" visible="false" />
+            <TextField id="varName" fx:id="lineNoValue" layoutX="294.0" layoutY="68.0" prefWidth="119.0" />
+            <ComboBox fx:id="cmdFileBox" layoutX="294.0" layoutY="26.0" prefWidth="201.0">
+              <items>
+                <FXCollections fx:factory="observableArrayList">
+                  <String fx:value="Item 1" />
+                  <String fx:value="Item 2" />
+                  <String fx:value="Item 3" />
+                </FXCollections>
+              </items>
+            </ComboBox>
+            <Label layoutX="212.0" layoutY="71.0" text="Line no." />
+            <Label id="visitErrorMsg" fx:id="lineNoErrorMsg" layoutX="294.0" layoutY="96.0" prefWidth="122.0" text="Invalid line no." textFill="RED" visible="false" />
           </children>
         </AnchorPane>
         <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="361.0" prefWidth="798.0">
           <children>
-            <TableView id="cmdTable" fx:id="cmdFileTable" layoutY="14.0" prefHeight="250.0" prefWidth="570.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0">
-              <columnResizePolicy>
-                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-              </columnResizePolicy>
-              <columns>
-                <TableColumn minWidth="200.0" prefWidth="200.0" text="Command File Name">
-                  <cellValueFactory>
-                    <PropertyValueFactory property="fileName" />
-                  </cellValueFactory>
-                </TableColumn>
-                <TableColumn text="Visit">
-                  <cellValueFactory>
-                    <PropertyValueFactory property="visit" />
-                  </cellValueFactory>
-                </TableColumn>
-              </columns>
-            </TableView>
+            <Label fx:id="assignedValueLabel" layoutX="14.0" layoutY="24.0" text="Assigned Value" />
+            <TextField fx:id="assignedValue" layoutX="134.0" layoutY="21.0" prefWidth="200.0" />
           </children>
         </AnchorPane>
       </items>
