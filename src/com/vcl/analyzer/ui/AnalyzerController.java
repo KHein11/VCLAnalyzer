@@ -30,7 +30,7 @@ import javafx.stage.Stage;
 public class AnalyzerController implements Initializable {
     public static final int NO_MENU = -1;
     public static final int CMD_MENU = 0;
-    public static final int MODIFY_MENU = 1;
+    public static final int CMD_FILE_MENU = 1;
     public static final int ADAPT_MENU = 2;
     public static final int SET_MENU = 3;
     public static final int YIELD_MENU = 4;
@@ -84,6 +84,14 @@ public class AnalyzerController implements Initializable {
         }
     }
 
+    @FXML
+    private void cmdFileMenuAction(ActionEvent event) throws IOException {
+        if (statDbFile != null && !statDbFile.equals("") && currentMenu != CMD_FILE_MENU) {
+            loadQueryPane("CommandFileQuery.fxml");
+            currentMenu = CMD_FILE_MENU;
+        }
+    }
+    
     /**
      * @param stage the stage to set
      */

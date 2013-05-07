@@ -55,7 +55,7 @@ public class AdaptAnalyzer extends Analyzer {
         return idList;
     }
 
-    public static List<AdaptRecord> findAllAdaptedByCmdFileTransitive(String adapter) throws ClassNotFoundException, SQLException {
+    public static List<AdaptRecord> findAllAdaptedByCmdFileTransitive(String adapter) throws SQLException {
         List<AdaptRecord> adapts = findAllAdaptedByCmdFile(adapter);
 
         Map<Long, String> visited = new HashMap<>();
@@ -86,11 +86,11 @@ public class AdaptAnalyzer extends Analyzer {
 
     }
 
-    public static List<AdaptRecord> findAllAdaptedByCmdFile(String adapter) throws ClassNotFoundException, SQLException {
+    public static List<AdaptRecord> findAllAdaptedByCmdFile(String adapter) throws SQLException {
         return findAllAdaptedByCmdFile(adapter, null);
     }
 
-    public static List<AdaptRecord> findAllAdaptedByCmdFile(String adapter, VisitCondition visit) throws ClassNotFoundException, SQLException {
+    public static List<AdaptRecord> findAllAdaptedByCmdFile(String adapter, VisitCondition visit) throws SQLException {
         StringBuilder sb = new StringBuilder();
         sb.append("Select adapt_cmd.cmd_id,adapting_file_id,adapted_file_id,");
         sb.append("adapter_file.file_name as adapter_name,adapted_file.file_name ");
@@ -112,7 +112,7 @@ public class AdaptAnalyzer extends Analyzer {
         return adapts;
     }
 
-    public static List<AdaptRecord> findAllAdaptingCmdFileTransitive(String adapter) throws ClassNotFoundException, SQLException {
+    public static List<AdaptRecord> findAllAdaptingCmdFileTransitive(String adapter) throws SQLException {
         List<AdaptRecord> adapts = findAllAdaptingCmdFile(adapter);
 
         Map<Long, String> visited = new HashMap<>();
@@ -143,11 +143,11 @@ public class AdaptAnalyzer extends Analyzer {
 
     }
 
-    public static List<AdaptRecord> findAllAdaptingCmdFile(String adaptee) throws ClassNotFoundException, SQLException {
+    public static List<AdaptRecord> findAllAdaptingCmdFile(String adaptee) throws SQLException {
         return findAllAdaptingCmdFile(adaptee, null);
     }
 
-    public static List<AdaptRecord> findAllAdaptingCmdFile(String adaptee, VisitCondition visit) throws ClassNotFoundException, SQLException {
+    public static List<AdaptRecord> findAllAdaptingCmdFile(String adaptee, VisitCondition visit) throws SQLException {
         StringBuilder sb = new StringBuilder();
         sb.append("Select adapt_cmd.cmd_id,adapting_file_id,adapted_file_id,");
         sb.append("adapter_file.file_name as adapter_name,adapted_file.file_name ");
@@ -169,7 +169,7 @@ public class AdaptAnalyzer extends Analyzer {
         return adapts;
     }
 
-    public static List<AdaptRecord> findAllAdaptedByCmd(String adaptCmdExpr, String cmdFileName, int lineNo, VisitCondition visit) throws ClassNotFoundException, SQLException {
+    public static List<AdaptRecord> findAllAdaptedByCmd(String adaptCmdExpr, String cmdFileName, int lineNo, VisitCondition visit) throws SQLException {
         StringBuilder sb = new StringBuilder();
         sb.append("Select adapt_cmd.cmd_id,adapting_file_id,adapted_file_id,");
         sb.append("adapter_file.file_name as adapter_name,adapted_file.file_name ");
@@ -181,22 +181,41 @@ public class AdaptAnalyzer extends Analyzer {
         sb.append(cmdFileName);
         sb.append("' and adapt_cmd.adapt_expr ='");
         sb.append(adaptCmdExpr);
-        sb.append("'");
-
+        sb.append("' and cmd.line_no =");
+        sb.append(lineNo);
+        
         if (visit != null) {
             sb.append(" and adapter_file.visit ");
             sb.append(visit.getVisitCondition());
         }
 
-        if (lineNo > 0) {
-            sb.append(" and cmd.line_no =");
-            sb.append(lineNo);
+        List<AdaptRecord> adapts = processAdaptQuery(sb.toString());
+        return adapts;
+    }
+    
+    public static List<AdaptRecord> findAllAdaptedByCmd(String cmdFileName, int lineNo, VisitCondition visit) throws SQLException {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Select adapt_cmd.cmd_id,adapting_file_id,adapted_file_id,");
+        sb.append("adapter_file.file_name as adapter_name,adapted_file.file_name ");
+        sb.append("as adaptee_name,adapter_file.visit as adapter_visit, adapted_file.visit as adaptee_visit ");
+        sb.append("from adapt_cmd, cmd, cmd_file as adapter_file, ");
+        sb.append("cmd_file as adapted_file where adapting_file_id = ");
+        sb.append("adapter_file.file_id and adapted_file_id = adapted_file.file_id ");
+        sb.append("and cmd.cmd_id = adapt_cmd.cmd_id and adapter_file.file_name = '");
+        sb.append(cmdFileName);
+        sb.append("' and cmd.line_no =");
+        sb.append(lineNo);
+
+        if (visit != null) {
+            sb.append(" and adapter_file.visit ");
+            sb.append(visit.getVisitCondition());
         }
+        
         List<AdaptRecord> adapts = processAdaptQuery(sb.toString());
         return adapts;
     }
 
-    private static List<AdaptRecord> processAdaptQuery(String query) throws ClassNotFoundException, SQLException {
+    private static List<AdaptRecord> processAdaptQuery(String query) throws SQLException {
         List<AdaptRecord> adapts = new ArrayList<>();
         try (Connection conn = DriverManager.getConnection(dbConfig.getConnName());
                 Statement stmt = conn.createStatement();

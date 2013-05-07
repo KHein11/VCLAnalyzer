@@ -2,6 +2,7 @@
 
 <?import java.lang.*?>
 <?import java.util.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
@@ -9,7 +10,7 @@
 
 <BorderPane id="BorderPane" fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" xmlns:fx="http://javafx.com/fxml" fx:controller="com.vcl.analyzer.ui.AnalyzerController">
   <center>
-    <AnchorPane prefHeight="200.0" prefWidth="200.0">
+    <AnchorPane prefHeight="676.0" prefWidth="875.9999000000025">
       <children>
         <HBox id="HBox" alignment="CENTER" layoutY="222.0" prefWidth="206.0" spacing="5.0" AnchorPane.leftAnchor="178.0" AnchorPane.rightAnchor="245.0">
           <children>
@@ -24,10 +25,14 @@
     </AnchorPane>
   </center>
   <left>
-      <VBox>
-    <Hyperlink fx:id="cmdMenu" onAction="#cmdMenuAction" text="Command" />
-    <Hyperlink text="Adapt" />
-      </VBox>
+    <VBox prefHeight="676.0" prefWidth="117.0">
+      <Hyperlink fx:id="cmdMenu" onAction="#cmdMenuAction" text="Command" />
+      <Hyperlink id="cmdMenu" onAction="#cmdFileMenuAction" text="Command File" />
+      <padding>
+        <Insets left="10.0" right="10.0" top="20.0" />
+      </padding>
+      <Hyperlink onAction="#adaptMenuAction" text="Adapt" />
+    </VBox>
   </left>
   <top>
     <MenuBar>

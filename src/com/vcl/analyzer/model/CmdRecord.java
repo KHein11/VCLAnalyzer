@@ -9,14 +9,14 @@ package com.vcl.analyzer.model;
  * @author kyihein
  */
 public class CmdRecord {
-    private long cmdId;
-    private long cmdFileId;
-    private long cmdTypeId;
-    private String cmdType;
-    private long lineNo;
-    private String cmdValue;
-    private String cmdFileName;
-    private int visit;
+    protected long cmdId;
+    protected long cmdFileId;
+    protected long cmdTypeId;
+    protected String cmdType;
+    protected long lineNo;
+    protected String cmdValue;
+    protected String cmdFileName;
+    protected int visit;
     
     /**
      * @return the cmdId

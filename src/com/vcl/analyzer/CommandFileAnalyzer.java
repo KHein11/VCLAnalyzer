@@ -20,7 +20,7 @@ import java.util.List;
  */
 public class CommandFileAnalyzer extends Analyzer {
 
-    public static List<CmdFileRecord> findAllCmdFileModifiedVar(String varName, VisitCondition visit) throws SQLException, ClassNotFoundException {
+    public static List<CmdFileRecord> findAllCmdFileModifiedVar(String varName, VisitCondition visit) throws SQLException {
         List<CmdFileRecord> cmdFileList = new ArrayList<>();
         StringBuilder sb = new StringBuilder();
         sb.append("Select distinct cmd_file.file_id, cmd_file.file_name, cmd_file.visit ");
@@ -51,7 +51,7 @@ public class CommandFileAnalyzer extends Analyzer {
         return cmdFileList;
     }
 
-    public static List<Long> findFileId(String fileName) throws ClassNotFoundException, SQLException {
+    public static List<Long> findFileId(String fileName) throws SQLException {
         List<Long> idList = new ArrayList<>();
 
         String sql = "Select file_id from cmd_file where file_name = ?";

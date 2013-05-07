@@ -12,7 +12,7 @@
 
 <AnchorPane id="AnchorPane" prefHeight="500.0" prefWidth="800.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml" fx:controller="com.vcl.analyzer.ui.CommandQueryController">
   <children>
-    <SplitPane dividerPositions="0.3353413654618474" focusTraversable="true" orientation="VERTICAL" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+    <SplitPane dividerPositions="0.25903614457831325" focusTraversable="true" orientation="VERTICAL" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <items>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
           <children>
@@ -41,10 +41,10 @@
             <TextField fx:id="visitValue" layoutX="596.0" layoutY="23.0" prefWidth="70.0" />
             <Button layoutX="520.0" layoutY="68.0" mnemonicParsing="false" onAction="#executeQueryAction" prefWidth="57.0" text="Ok" />
             <Button layoutX="609.0" layoutY="68.0" mnemonicParsing="false" onAction="#resetAction" text="Reset" />
-            <Label fx:id="visitErrorMsg" layoutX="679.0" layoutY="26.0" prefWidth="98.0" text="Invalid visit value," textFill="RED" visible="false" />
+            <Label fx:id="visitErrorMsg" layoutX="596.0" layoutY="45.0" prefWidth="122.0" text="Invalid visit value." textFill="RED" visible="false" />
           </children>
         </AnchorPane>
-        <AnchorPane minHeight="-Infinity" minWidth="-Infinity">
+        <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="361.0" prefWidth="798.0">
           <children>
             <TableView fx:id="cmdTable" layoutY="14.0" prefHeight="250.0" prefWidth="570.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0">
               <columnResizePolicy>

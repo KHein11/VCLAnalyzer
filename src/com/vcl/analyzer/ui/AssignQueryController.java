@@ -4,13 +4,12 @@
  */
 package com.vcl.analyzer.ui;
 
-import com.vcl.analyzer.CommandAnalyzer;
 import com.vcl.analyzer.CommandFileAnalyzer;
 import com.vcl.analyzer.VisitCondition;
+import com.vcl.analyzer.model.CmdFileRecord;
 import com.vcl.analyzer.model.CmdRecord;
 import java.net.URL;
 import java.sql.SQLException;
-import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -25,77 +24,47 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 
 /**
- * FXML Controller class
  *
  * @author kyihein
  */
-public class CommandQueryController implements Initializable {
-
+public class AssignQueryController  implements Initializable {
     @FXML
-    private ComboBox<String> cmdTypeBox;
-    @FXML
-    private ComboBox<String> cmdFileBox;
+    private TextField lineNoValue;
     @FXML
     private ComboBox<String> visitBox;
     @FXML
     private TextField visitValue;
     @FXML
-    private TableView cmdTable;
+    private TableView<CmdFileRecord> varRecordTable;
     @FXML
     private Label visitErrorMsg;
-    /**
-     * Initializes the controller class.
-     */
+    @FXML
+    private Label lineNoErrorMsg;
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        try {
-            cmdTypeBox.getItems().setAll(AnalyzerConfig.ITEM_ALL);
-            
-            List<String> cmdTypes = CommandAnalyzer.getAllCmdTypes();    
-            cmdTypeBox.getItems().addAll(cmdTypes);
-            cmdTypeBox.setValue(AnalyzerConfig.ITEM_ALL);
-            cmdFileBox.getItems().setAll(AnalyzerConfig.ITEM_ALL);
-            
-            List<String> cmdFiles = CommandFileAnalyzer.getAllFileNames(); 
-            cmdFileBox.getItems().addAll(cmdFiles);
-            cmdFileBox.setValue(AnalyzerConfig.ITEM_ALL);
-            visitBox.getItems().setAll(AnalyzerConfig.ITEM_ALL, AnalyzerConfig.ITEM_EQ, AnalyzerConfig.ITEM_GT, AnalyzerConfig.ITEM_GTE, AnalyzerConfig.ITEM_LT, AnalyzerConfig.ITEM_LTE, AnalyzerConfig.ITEM_IN);
-            visitBox.setValue(AnalyzerConfig.ITEM_ALL);
-        } catch (SQLException ex) {
-            System.err.println("Database error occured : " + ex.getMessage());
-        }
+        visitBox.getItems().setAll(AnalyzerConfig.ITEM_ALL, AnalyzerConfig.ITEM_EQ, AnalyzerConfig.ITEM_GT, AnalyzerConfig.ITEM_GTE, AnalyzerConfig.ITEM_LT, AnalyzerConfig.ITEM_LTE, AnalyzerConfig.ITEM_IN);
+        visitBox.setValue(AnalyzerConfig.ITEM_ALL);
     }
-
+    
     @FXML
     private void onVisitComboBoxAction(ActionEvent event) {
         if (visitBox.getValue().equals(AnalyzerConfig.ITEM_ALL)) {
+            visitValue.setText("");
             visitValue.setDisable(true);
         } else {
-            visitValue.setText("");
             visitValue.setDisable(false);
         }
     }
 
     @FXML
     private void executeQueryAction(ActionEvent event) {
-        ObservableList<CmdRecord> data = cmdTable.getItems();
-       
         if(visitErrorMsg.isVisible()) {
             visitErrorMsg.setVisible(false);
         }
         
-        String cmdFileName = "";
-        String cmdType = "";
         VisitCondition visitCondition = null;
-
-        if (!cmdTypeBox.getValue().equals(AnalyzerConfig.ITEM_ALL)) {
-            cmdType = cmdTypeBox.getValue();
-        }
-
-        if (!cmdFileBox.getValue().equals(AnalyzerConfig.ITEM_ALL)) {
-            cmdFileName = cmdFileBox.getValue();
-        }
-
+        
         try {
             if (!visitBox.getValue().equals(AnalyzerConfig.ITEM_ALL)) {
                 visitCondition = new VisitCondition(visitBox.getValue(), visitValue.getText());
@@ -106,18 +75,18 @@ public class CommandQueryController implements Initializable {
         }
         
         try {
-            List<CmdRecord> cmdList = CommandAnalyzer.findCmdFromFile(cmdFileName, cmdType, visitCondition);
-            data.setAll(cmdList);
+            String varNameInput = lineNoValue.getText();
+            List<CmdFileRecord> cmdFileRecords = CommandFileAnalyzer.findAllCmdFileModifiedVar(varNameInput, visitCondition);
+            ObservableList<CmdFileRecord> data = varRecordTable.getItems();
+            data.setAll(cmdFileRecords);
         } catch (SQLException e) {
             System.err.println("Error occured accessing database : " + e.getMessage());
         }
-
     }
-
+    
     @FXML
     private void resetAction(ActionEvent event) {
-        cmdTypeBox.setValue(AnalyzerConfig.ITEM_ALL);
-        cmdFileBox.setValue(AnalyzerConfig.ITEM_ALL);
+        lineNoValue.setText("");
         visitBox.setValue(AnalyzerConfig.ITEM_ALL);
         visitValue.setDisable(true);
         visitErrorMsg.setVisible(false);
