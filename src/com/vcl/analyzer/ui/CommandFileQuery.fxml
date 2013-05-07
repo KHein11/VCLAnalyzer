@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.collections.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.cell.*?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="500.0" prefWidth="800.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml" fx:controller="com.vcl.analyzer.ui.CommandQueryController">
+  <children>
+    <SplitPane dividerPositions="0.3353413654618474" focusTraversable="true" orientation="VERTICAL" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <items>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+          <children>
+            <Label layoutX="14.0" layoutY="26.0" text="Find" />
+            <ComboBox fx:id="cmdTypeBox" layoutX="49.0" layoutY="23.0" prefWidth="88.0">
+              <items>
+                <FXCollections fx:factory="observableArrayList">
+                  <String fx:value="Item 1" />
+                  <String fx:value="Item 2" />
+                  <String fx:value="Item 3" />
+                </FXCollections>
+              </items>
+            </ComboBox>
+            <Label layoutX="149.0" layoutY="26.0" text="from" />
+            <ComboBox fx:id="cmdFileBox" layoutX="206.0" layoutY="23.0" prefWidth="209.0" />
+            <Label layoutX="447.0" layoutY="26.0" prefWidth="50.0" text="in visit" />
+            <ComboBox fx:id="visitBox" layoutX="520.0" layoutY="23.0" onAction="#onVisitComboBoxAction" prefWidth="50.0">
+              <items>
+                <FXCollections fx:factory="observableArrayList">
+                  <String fx:value="Item 1" />
+                  <String fx:value="Item 2" />
+                  <String fx:value="Item 3" />
+                </FXCollections>
+              </items>
+            </ComboBox>
+            <TextField fx:id="visitValue" layoutX="596.0" layoutY="23.0" prefWidth="70.0" />
+            <Button layoutX="520.0" layoutY="68.0" mnemonicParsing="false" onAction="#executeQueryAction" prefWidth="57.0" text="Ok" />
+            <Button layoutX="609.0" layoutY="68.0" mnemonicParsing="false" onAction="#resetAction" text="Reset" />
+            <Label fx:id="visitErrorMsg" layoutX="679.0" layoutY="26.0" prefWidth="98.0" text="Invalid visit value," textFill="RED" visible="false" />
+          </children>
+        </AnchorPane>
+        <AnchorPane minHeight="-Infinity" minWidth="-Infinity">
+          <children>
+            <TableView fx:id="cmdTable" layoutY="14.0" prefHeight="250.0" prefWidth="570.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0">
+              <columnResizePolicy>
+                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+              </columnResizePolicy>
+              <columns>
+                <TableColumn minWidth="200.0" prefWidth="210.0" text="Command">
+                  <cellValueFactory>
+                    <PropertyValueFactory property="cmdValue" />
+                  </cellValueFactory>
+                </TableColumn>
+                <TableColumn minWidth="200.0" prefWidth="200.0" text="Command File">
+                  <cellValueFactory>
+                    <PropertyValueFactory property="cmdFileName" />
+                  </cellValueFactory>
+                </TableColumn>
+                <TableColumn prefWidth="90.0" text="Line No.">
+                  <cellValueFactory>
+                    <PropertyValueFactory property="lineNo" />
+                  </cellValueFactory>
+                </TableColumn>
+                <TableColumn text="Visit">
+                  <cellValueFactory>
+                    <PropertyValueFactory property="visit" />
+                  </cellValueFactory>
+                </TableColumn>
+              </columns>
+            </TableView>
+          </children>
+        </AnchorPane>
+      </items>
+    </SplitPane>
+  </children>
+  <stylesheets>
+    <URL value="@commandquery.css" />
+  </stylesheets>
+</AnchorPane>
